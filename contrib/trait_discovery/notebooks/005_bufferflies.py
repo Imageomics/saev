@@ -259,7 +259,8 @@ def _(
         )
 
         df = (
-            df.unnest("config/sae", "config/train_data/metadata", separator="/")
+            df
+            .unnest("config/sae", "config/train_data/metadata", separator="/")
             .unnest("config/sae/activation", separator="/")
             .unnest(
                 "config/sae/activation/aux",
@@ -297,7 +298,8 @@ def _(
     def _finalize_clf_df(rows: list[dict[str, object]]):
         df = pl.DataFrame(rows, infer_schema_length=None)
         df = (
-            df.unnest("config/sae", "config/train_data/metadata", separator="/")
+            df
+            .unnest("config/sae", "config/train_data/metadata", separator="/")
             .unnest("config/sae/activation", separator="/")
             .unnest(
                 "config/sae/activation/aux",
@@ -516,7 +518,8 @@ def _(clf_df, itertools, np, pl, plt, saev):
                     continue
 
                 group = group.with_columns(
-                    pl.col("cls/classifier")
+                    pl
+                    .col("cls/classifier")
                     .map_elements(
                         lambda clf: len(np.nonzero(clf.coef_)[0]),
                         return_dtype=pl.Int32,

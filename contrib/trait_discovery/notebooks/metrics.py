@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "0.23.2"
 app = marimo.App(width="full")
 
 
@@ -2153,7 +2153,7 @@ def _(df, pl):
     layer_frontier_stats = frontier.group_by("layer").agg(agg_exprs).sort(by="layer")
 
     layer_frontier_stats
-    return (layer_frontier_stats,)
+    return
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.20.2"
+__generated_with = "0.23.2"
 app = marimo.App(width="full")
 
 
@@ -539,7 +539,8 @@ def _(NMSE_SHARD, RunSpec, load_df, mo, pl, plt, saev):
         ax.legend(frameon=True, ncol=1)
 
         csv_df = (
-            pl.concat(csv_parts)
+            pl
+            .concat(csv_parts)
             .sort("method", "l0")
             .select(
                 "id",
@@ -696,7 +697,8 @@ def _(NMSE_SHARD, RunSpec, load_df, mo, pl, plt):
         df, skipped_run_ids = load_df(specs)
         y_col = f"{NMSE_SHARD}/mse_per_dim"
         missing_metric_run_ids = (
-            df.filter(
+            df
+            .filter(
                 pl.col("method").str.starts_with("Layer ") & pl.col(y_col).is_null()
             )
             .get_column("id")
@@ -801,7 +803,8 @@ def _(NMSE_SHARD, RunSpec, load_df, mo, pl, plt):
         ax.legend(ncol=2)
 
         csv_df = (
-            pl.concat(csv_parts)
+            pl
+            .concat(csv_parts)
             .sort("method", "l0")
             .select("id", "layer", "method", "l0", y_col)
         )
@@ -1087,7 +1090,8 @@ def _(RunSpec, load_df, mo, pl, plt, saev):
         missing_probe_run_ids: list[str] = []
         for method, probe_col in probe_col_by_method.items():
             missing_probe_run_ids.extend(
-                df.filter((pl.col("method") == method) & pl.col(probe_col).is_null())
+                df
+                .filter((pl.col("method") == method) & pl.col(probe_col).is_null())
                 .get_column("id")
                 .to_list()
             )

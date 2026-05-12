@@ -1,0 +1,123 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+% ---------------------------------------------------------------
+% Include basic CVPR package in rebuttal mode
+
+\usepackage[rebuttal]{cvpr}
+
+% ---------------------------------------------------------------
+% Other packages
+
+% Commonly used abbreviations (\eg, \ie, \etc, \cf, \etal, etc.)
+\usepackage{eccvabbrv}
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% The "axessiblity" package can be found at: https://ctan.org/pkg/axessibility?lang=en
+\usepackage[accsupp]{axessibility}  % Improves PDF readability for those with disabilities.
+
+
+% ---------------------------------------------------------------
+% Hyperref package
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+
+\definecolor{eccvblue}{rgb}{0.12,0.49,0.85}
+\definecolor{reviewgreen}{RGB}{25,130,75}
+\usepackage[pagebackref,breaklinks,colorlinks,citecolor=eccvblue]{hyperref}
+
+\newcommand{\kTM}{\textcolor{red}{k8TM}}
+\newcommand{\dfw}{\textcolor{blue}{d9fw}}
+\newcommand{\otQM}{\textcolor{reviewgreen}{otQM}}
+
+
+% ---------------------------------------------------------------
+% If you wish to avoid re-using figure, table, and equation numbers from
+% the main paper, please uncomment the following and change the numbers
+% appropriately.
+%\setcounter{figure}{2}
+%\setcounter{table}{1}
+%\setcounter{equation}{2}
+
+% If you wish to avoid re-using reference numbers from the main paper,
+% please uncomment the following and change the counter for `enumiv' to
+% the number of references you have in the main paper (here, 6).
+%\let\oldthebibliography=\thebibliography
+%\let\oldendthebibliography=\endthebibliography
+%\renewenvironment{thebibliography}[1]{%
+%     \oldthebibliography{#1}%
+%     \setcounter{enumiv}{6}%
+%}{\oldendthebibliography}
+
+
+% ---------------------------------------------------------------
+\def\paperID{4615}
+\def\confName{ECCV}
+\def\confYear{2026}
+
+\begin{document}
+
+% ---------------------------------------------------------------
+%\maketitle
+\thispagestyle{empty}
+\appendix
+
+
+% ---------------------------------------------------------------
+\section*{Response}
+
+We appreciate the reviewers' careful reading.
+Reviewers find that our paper ``addresses an important and useful problem'' (\dfw{}, \#1), uses ``a sensible evaluation strategy'' (\kTM{}, \#1), presents the method ``clearly and systematically'' (\dfw{}, \#2), and is ``easy to follow'' (\otQM{}, \textbf{Writing}); \otQM{} also notes that this is the first practical use of SAEs for open-ended concept discovery (\otQM{}, \textbf{Novelty}).
+The reviews identify four main issues: the scope of the discovery claim (\kTM{}, W\#1; \dfw{}, A\#2), strength of baselines (\kTM{}, W\#2; \dfw{}, A\#1), breadth of evaluation (\kTM{}, W\#4; \dfw{}, B\#2), and analysis of failure modes (\otQM{}, \textbf{Confirmation bias}; \otQM{}, \textbf{Reconstruction loss}).
+Some requested experiments were already present; we discuss these experiments here as well (SemiNMF baseline and the Perception Encoder backbone comparison).
+
+\paragraph{Scope and framing (\kTM{} W\#1, \dfw{} A\#2, \otQM{} \textbf{Limitations}).}
+We agree that our work should not be read as reporting a novel discovery.
+Our intended claim is: SAEs provide a label-free instrument for surfacing candidate concepts from foundation model representations, and controlled rediscovery tests whether SAEs recover structure that was withheld.
+In revision, we will make this distinction consistent throughout; we would retitle the paper ``Towards Open-Ended Visual Discovery with Sparse Autoencoders,'' reserve ``scientific discovery'' for downstream domain-expert validation, and explicitly state that our experiments validate the instrument rather than deliver new facts.
+We will also temper statements about non-vision domains: our method is domain-agnostic, but empirical validation beyond vision requires future work.
+
+\paragraph{Baselines and related work (\kTM{} W\#2, \dfw{} A\#1).}
+We highlight that the requested NMF-family comparison is already present: \textbf{Table 1} and \textbf{Fig.\ 3 (left)} include \textbf{SemiNMF}, an NMF-style decomposition, trained on the same ImageNet activations and evaluated under the identical ADE20K protocol (Sec.\ 4.1, lines 208--210).
+The empirical gap is material: vanilla SAEs improve mAP from 0.031/0.093/0.088 ($k$-means/PCA/SemiNMF) to 0.224, and TopK SAEs reach 0.389 mAP / 0.576 coverage.
+SemiNMF has nonnegative codes but a signed dictionary; we will add a standard NMF baseline (nonnegative codes \emph{and} dictionary) under the same protocol, directly mirroring the factorization step used by CRAFT.
+% Our rediscovery metrics do not use CRAFT's task-importance stage: for every latent and every held-out ADE20K class, we fit an independent 1-D logistic probe on that latent's patch activation, then report AP, purity, and coverage over the best-aligned latents.
+CRAFT's importance scoring estimates how discovered factors affect a downstream class score, whereas our evaluation asks whether the factors themselves align with withheld segmentation concepts; the relevant differentiator under our protocol is therefore the learned factorization, not the post-hoc importance step.
+We will expand our Related Work with ACE, sparse coding, and recent work including Joseph et al.\ (\otQM{}).
+
+\paragraph{Backbone breadth and generality (\dfw{} B\#2, \kTM{} W\#4).}
+We highlight that the requested evaluation beyond DINOv3 is already present: \textbf{Table 3} reports \textbf{Perception Encoder ViT-L/14} under the identical protocol, discussed in Sec.\ 4.2 (\textbf{ViT family}).
+With DINOv3 ViT-S/B/L and PE, we span scales within a self-supervised family and a different training objective (contrastive vision-language).
+The strongest concept-rediscovery evidence is for the self-supervised DINOv3 family; contrastive PE underperforms substantially across all four metrics.
+We read this as scope-defining: SAEs need representations whose objective rewards structured patch features. We will state this explicitly.
+
+\paragraph{Confirmation bias and feature quality (\otQM{} \textbf{Confirmation bias}).}
+Controlled rediscovery is deliberately biased toward concepts with ground truth, because it gives a measurable validation target for a label-free extractor.
+We agree it is not enough to show only hand-picked expected concepts.
+We will add uncurated, randomly sampled/high-activation SAE latents selected without class labels, plus examples of coherent, trivial, and spurious features.
+This will clarify what fraction of browsed features appear useful versus texture/color/location artifacts.
+
+\paragraph{Reconstruction, norms, and registers (\otQM{})}
+We agree reconstruction metrics require care.
+Our main conclusions rely on held-out concept-alignment metrics, not NMSE alone; in fact, later layers have worse reconstruction but better concept alignment, showing that reconstruction-sparsity tradeoffs are not sufficient for discovery.
+We will add examples contrasting good and bad reconstructions and discuss missing semantic/spatial information.
+For registers and high norms: our extraction discards special tokens such as [CLS] and operates only on patch tokens, so register-token artifacts are not included.
+We will clarify this.
+
+\paragraph{FishVista reconstruction metric (\kTM{} W\#3).}
+% FishVista & 0.184 & 16 & 0.184 & 16 & 0.439 & 0.544 & 0.838 & 0.7 \\ % um6hbn05, 24/24
+\kTM{} is right that the reported FishVista target NMSE is suspicious.
+We identified this as a typo in the submission and will replace the row with corrected source and target reconstruction values (0.18444 and 0.18435, nearly identical). 
+Thank you for your attention to detail.
+
+\paragraph{Matryoshka hierarchy and limitations (\dfw{} B\#2, \otQM{} \textbf{Limitations}).}
+We agree that better rediscovery metrics do not by themselves prove a useful hierarchy.
+We will not claim that the Matryoshka ordering is established; the hierarchy discussion will be marked as anecdotal/future work.
+We will also strengthen the limitations section to discuss rare/long-tail concepts, localized-part bias, abstract or non-local scientific structures, and the need for expert validation of any novel candidate concept.
+
+\end{document}
+

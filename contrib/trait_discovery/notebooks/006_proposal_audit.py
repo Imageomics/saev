@@ -194,7 +194,8 @@ def _(
         )
 
         df = (
-            df.unnest("config/sae", "config/train_data/metadata", separator="/")
+            df
+            .unnest("config/sae", "config/train_data/metadata", separator="/")
             .unnest("config/sae/activation", separator="/")
             .unnest(
                 "config/sae/activation/aux",
@@ -232,7 +233,8 @@ def _(
     def _finalize_clf_df(rows: list[dict[str, object]]):
         df = pl.DataFrame(rows, infer_schema_length=None)
         df = (
-            df.unnest("config/sae", "config/train_data/metadata", separator="/")
+            df
+            .unnest("config/sae", "config/train_data/metadata", separator="/")
             .unnest("config/sae/activation", separator="/")
             .unnest(
                 "config/sae/activation/aux",
@@ -1173,7 +1175,8 @@ def _(clf_df, mo, np, pl, plt, saev, scipy):
 
         # Table of individual points
         table = (
-            filtered.select(
+            filtered
+            .select(
                 "config/val_data/layer",
                 "cls/cfg/cls/key",
                 k_col,
@@ -1942,7 +1945,8 @@ def _(clf_df, mo, np, pl, plt, saev, scipy):
 
         # Table of individual points
         table = (
-            filtered.select(
+            filtered
+            .select(
                 "config/val_data/layer",
                 "cls/cfg/cls/key",
                 k_col,

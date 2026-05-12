@@ -4,10 +4,28 @@ docs: lint
     -yek src/saev README.md AGENTS.md > docs/api/llms.txt
     uv run mkdocs build --config-file docs/mkdocs.yml
 
-test: lint
-    uv run pytest --cov src/saev --cov-report term --cov-report html --cov-report json --json-report --json-report-file pytest.json -n 4 -m "" tests --shards /fs/scratch/PAS2136/samuelstevens/saev/shards/cbe4305d /fs/scratch/PAS2136/samuelstevens/saev/shards/7949ad9b || true
+test:
+    uv run pytest -m "not slow and not integration" tests
+
+test-fast:
+    uv run pytest -n 4 -m "not slow and not integration" tests
+
+test-slow:
+    uv run pytest -m "slow and not integration" tests
+
+test-cov:
+    uv run pytest -n 4 -m "not slow and not integration" tests --cov src/saev --cov-report term --cov-report html --cov-report json --json-report --json-report-file pytest.json
+
+test-integration +ARGS:
+    uv run pytest -m "integration" tests {{ ARGS }}
+
+test-report: test-cov
     uv run coverage-badge -o docs/assets/coverage.svg -f
-    uv run scripts/regressions.py
+    uv run python scripts/regressions.py
+
+check: lint test
+
+check-all: lint test test-slow
 
 lint: fmt
     find src/ scripts/ contrib/ -type f -name '*.py' | grep -v "notebooks" | grep -v "interactive" | xargs uvx ruff check --fix

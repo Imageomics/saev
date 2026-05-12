@@ -15,6 +15,7 @@ import numpy as np
 import polars as pl
 import scipy.sparse
 import torch
+import torchvision
 import tyro
 from jaxtyping import Float, jaxtyped
 from PIL import Image
@@ -162,9 +163,8 @@ def make_seg(
     patch_grid_h = h // patch_size
     patch_grid_w = w // patch_size
     patch_labels = (
-        saev.data.shards.pixel_to_patch_labels(
-            seg, n_patches, patch_size, pixel_agg, bg_label
-        )
+        saev.data.shards
+        .pixel_to_patch_labels(seg, n_patches, patch_size, pixel_agg, bg_label)
         .numpy()
         .reshape(patch_grid_h, patch_grid_w)
     )
@@ -184,6 +184,42 @@ def make_seg(
 @beartype.beartype
 def safe_load(path: pathlib.Path) -> Tensor:
     return torch.load(path, map_location="cpu", weights_only=True)
+
+
+@beartype.beartype
+class ImgOnlyDataset(torch.utils.data.Dataset):
+    def __init__(self, img_paths: list[str], transform: tp.Callable | None):
+        self.img_paths = img_paths
+        self.transform = transform
+        self.loader = torchvision.datasets.folder.default_loader
+
+    def __len__(self) -> int:
+        return len(self.img_paths)
+
+    def __getitem__(self, idx: int) -> dict[str, object]:
+        img = self.loader(self.img_paths[idx])
+        if self.transform is not None:
+            img = self.transform(img)
+        return {"data": img, "index": idx}
+
+
+@beartype.beartype
+def make_img_only_imgsegfolder_dataset(
+    cfg: saev.data.datasets.ImgSegFolder,
+    transform: tp.Callable | None,
+) -> ImgOnlyDataset:
+    split_dpath = pathlib.Path(cfg.root) / "images" / cfg.split
+    msg = f"Missing split directory '{split_dpath}'."
+    assert split_dpath.is_dir(), msg
+    exts = {ext.lower() for ext in torchvision.datasets.folder.IMG_EXTENSIONS}
+    img_paths = sorted(
+        str(fpath)
+        for fpath in split_dpath.iterdir()
+        if fpath.is_file() and fpath.suffix.lower() in exts
+    )
+    msg = f"No images found for split '{cfg.split}' in '{split_dpath}'."
+    assert img_paths, msg
+    return ImgOnlyDataset(img_paths, transform)
 
 
 @beartype.beartype
@@ -215,9 +251,20 @@ def worker_fn(cfg: Config):
         md.ckpt, md.content_tokens_per_example, scale=cfg.img_scale
     )
     img_cfg = md.make_data_cfg()
-    img_ds = saev.data.datasets.get_dataset(
-        img_cfg, data_transform=resize_tr, mask_transform=resize_tr
-    )
+    mask_transform = resize_tr if cfg.save_seg else None
+    try:
+        img_ds = saev.data.datasets.get_dataset(
+            img_cfg, data_transform=resize_tr, mask_transform=mask_transform
+        )
+    except FileNotFoundError as err:
+        if cfg.save_seg:
+            raise
+        if not isinstance(img_cfg, saev.data.datasets.ImgSegFolder):
+            raise
+        logger.warning(
+            "Falling back to image-only dataset because masks are unavailable: %s", err
+        )
+        img_ds = make_img_only_imgsegfolder_dataset(img_cfg, resize_tr)
 
     logger.info("Loaded data.")
 

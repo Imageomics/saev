@@ -108,7 +108,8 @@ def _(pl):
         obs = obs.with_columns([pl.col(field).fill_null("unknown") for field in fields])
 
         combos = (
-            obs.select(fields)
+            obs
+            .select(fields)
             .unique(maintain_order=True)  # first-seen ordering
             .with_columns(pl.arange(0, pl.len(), dtype=pl.Int32).alias("target"))
         )
@@ -117,7 +118,8 @@ def _(pl):
 
         target2fields = {
             target: tuple(rest)
-            for target, *rest in obs.unique(pl.col("target"))
+            for target, *rest in obs
+            .unique(pl.col("target"))
             .select("target", *fields)
             .iter_rows()
         }
@@ -455,7 +457,8 @@ def _(f1, img_obs, np, pl, prec, recall, sae_var, target2fields):
 
     i2c = sorted(
         np.unique(
-            img_obs.filter(pl.col("hybrid_stat") == "non-hybrid")
+            img_obs
+            .filter(pl.col("hybrid_stat") == "non-hybrid")
             .get_column("target")
             .to_numpy()
         ).tolist()
@@ -463,7 +466,8 @@ def _(f1, img_obs, np, pl, prec, recall, sae_var, target2fields):
     print(i2c)
 
     df = (
-        pl.DataFrame([
+        pl
+        .DataFrame([
             {
                 "species": target2fields[i2c[i]][0],
                 "view": target2fields[i2c[i]][1],
@@ -548,7 +552,8 @@ def _(df, pairs, pl):
     for a, b in pairs:
         for ssp in [a, b]:
             count_series = (
-                df.filter(
+                df
+                .filter(
                     ~pl.col("species").str.contains(" x ")
                     & (pl.col("species").str.contains(f"ssp. {ssp}"))
                 )

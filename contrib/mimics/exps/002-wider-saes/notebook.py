@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.20.2"
+__generated_with = "0.23.2"
 app = marimo.App(width="full")
 
 
@@ -19,7 +19,7 @@ def _():
 
     figs_dpath = pathlib.Path("contrib/mimics/exps/002-wider-saes/figs")
     figs_dpath.mkdir(exist_ok=True)
-    return adjust_text, figs_dpath, mo, np, pl, plt, saev, wandb
+    return adjust_text, figs_dpath, mo, np, pathlib, pl, plt, saev, wandb
 
 
 @app.cell

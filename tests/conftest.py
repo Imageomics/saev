@@ -1,3 +1,4 @@
+import collections.abc
 import contextlib
 import pathlib
 import tempfile
@@ -6,6 +7,14 @@ import beartype
 import pytest
 
 import saev.data
+
+INTEGRATION_FIXTURES = frozenset({
+    "shards_dir",
+    "shards_dir_with_token_labels",
+    "segfolder_root",
+    "dinov3_ckpt",
+    "imgfolder_root",
+})
 
 
 def pytest_addoption(parser):
@@ -48,6 +57,17 @@ def pytest_generate_tests(metafunc):
 
         ids = [f"shards={p.name[:8]}" for p in paths]
         metafunc.parametrize("shards_dir", paths, ids=ids, indirect=True)
+
+
+@beartype.beartype
+def uses_integration_fixture(fixturenames: collections.abc.Collection[str]) -> bool:
+    return not INTEGRATION_FIXTURES.isdisjoint(fixturenames)
+
+
+def pytest_collection_modifyitems(items: list[pytest.Function]) -> None:
+    for item in items:
+        if uses_integration_fixture(item.fixturenames):
+            item.add_marker(pytest.mark.integration)
 
 
 @pytest.fixture(scope="session")

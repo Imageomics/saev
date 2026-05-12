@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.20.2"
+__generated_with = "0.23.2"
 app = marimo.App(width="full")
 
 
@@ -114,9 +114,9 @@ def _(mo, scores_df):
 
 @app.cell
 def _(mo, pl, scores_df, task_dropdown):
-    filtered_df = scores_df.filter(
-        pl.col("task") == task_dropdown.value
-    ).sort("selectivity", descending=True)
+    filtered_df = scores_df.filter(pl.col("task") == task_dropdown.value).sort(
+        "selectivity", descending=True
+    )
     mo.stop(filtered_df.height == 0, mo.md("No features for this task."))
 
     feature_table = mo.ui.table(

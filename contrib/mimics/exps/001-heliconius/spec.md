@@ -26,7 +26,7 @@ Create a `make_cfgs()` sweep that runs L1-penalized logistic regression (SparseL
   - `lativitta_vs_malleti`, `cyrbia_vs_cythera`, `notabilis_vs_plesseni`, `hydara_vs_melpomene`, `venus_vs_vulcanus`, `demophoon_vs_rosina`, `phyllis_vs_nanna`, `erato_vs_thelxiopeia`
 - **Label format**: `source_col="subspecies"` with bare subspecies names. v1.6 labels.csv has columns `stem,subspecies` with values like `"lativitta"`, `"malleti"`, etc. Groups use these bare names:
   ```python
-  groups={"erato": ["lativitta"], "melpomene": ["malleti"]}
+  groups = {"erato": ["lativitta"], "melpomene": ["malleti"]}
   ```
 - **Hybrids**: Excluded automatically because hybrid labels like `"malleti x bellula"` won't match the exact bare name `"malleti"` in `apply_grouping`'s exact string matching.
 - **Train/test shards**: Same directory (same as 005 pattern). This means accuracy numbers are on training data, not generalization metrics. This is acceptable because the goal is feature discovery (which features separate these species), not building a generalizable classifier. The notebook will document this.
