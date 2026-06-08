@@ -2,16 +2,16 @@
 
 ![PyPI Downloads](https://static.pepy.tech/badge/saev)
 ![MIT License](https://img.shields.io/badge/License-MIT-efefef)
-![GitHub Repo stars](https://img.shields.io/github/stars/OSU-NLP-group/saev?style=flat&label=GitHub%20%E2%AD%90)
+![GitHub Repo stars](https://img.shields.io/github/stars/Imageomics/saev?style=flat&label=GitHub%20%E2%AD%90)
 
 Training sparse autoencoders (SAEs) on vision transformers (ViTs), implemented in PyTorch.
 
 ## Docs
 
-- [Docs](https://osu-nlp-group.github.io/saev/api)
-- [Colab Notebook for SAE Inference](https://colab.research.google.com/github/OSU-NLP-Group/saev/blob/main/examples/inference.ipynb)
-- [User guide](https://osu-nlp-group.github.io/saev/api/users/guide)
-- [API reference](https://osu-nlp-group.github.io/saev/api/api/saev/)
+- [Docs](https://imageomics.github.io/saev/api)
+- [Colab Notebook for SAE Inference](https://colab.research.google.com/github/Imageomics/saev/blob/main/examples/inference.ipynb)
+- [User guide](https://imageomics.github.io/saev/api/users/guide)
+- [API reference](https://imageomics.github.io/saev/api/api/saev/)
 
 ## Research
 
@@ -29,10 +29,9 @@ If you want to cite the software, please cite it as:
 ```bib
 @software{stevens2025saev,
   author = {Stevens, Samuel},
-  license = {CC-BY-4.0},
   month = apr,
   title = {{saev}},
-  url = {https://github.com/OSU-NLP-Group/saev},
+  url = {https://github.com/Imageomics/saev},
   year = {2025}
 }
 ```
