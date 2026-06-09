@@ -1,5 +1,5 @@
-repo_url = "https://github.com/OSU-NLP-Group/saev"
-docs_url = "https://osu-nlp-group.github.io/saev"
+repo_url = "https://github.com/Imageomics/saev"
+docs_url = "https://imageomics.github.io/saev"
 
 
 def main(

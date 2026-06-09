@@ -1,199 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/</loc>
+         <loc>https://imageomics.github.io/saev/api/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/colors/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/colors/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/configs/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/configs/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/disk/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/disk/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/helpers/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/helpers/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/metrics/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/metrics/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/saev/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/saev/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/summary/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/summary/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/viz/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/viz/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/bird_mae/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/bird_mae/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/buffers/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/buffers/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/clip/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/clip/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/datasets/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/datasets/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/dinov2/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/dinov2/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/dinov3/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/dinov3/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/fake_clip/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/fake_clip/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/indexed/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/indexed/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/models/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/models/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/ordered/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/ordered/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/pe/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/pe/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/saev.data/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/saev.data/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/shards/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/shards/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/shuffled/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/shuffled/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/siglip/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/siglip/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/data/transforms/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/data/transforms/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/framework/inference/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/framework/inference/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/framework/saev.framework/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/framework/saev.framework/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/framework/shards/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/framework/shards/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/framework/train/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/framework/train/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/nn/modeling/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/nn/modeling/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/nn/objectives/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/nn/objectives/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/nn/saev.nn/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/nn/saev.nn/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/utils/monitoring/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/utils/monitoring/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/utils/saev.utils/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/utils/saev.utils/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/utils/scheduling/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/utils/scheduling/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/utils/statistics/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/utils/statistics/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/api/utils/wandb/</loc>
+         <loc>https://imageomics.github.io/saev/api/api/utils/wandb/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/developers/contributing/</loc>
+         <loc>https://imageomics.github.io/saev/api/developers/contributing/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/developers/datapoint-init/</loc>
+         <loc>https://imageomics.github.io/saev/api/developers/datapoint-init/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/developers/disk-layout/</loc>
+         <loc>https://imageomics.github.io/saev/api/developers/disk-layout/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/developers/naming/</loc>
+         <loc>https://imageomics.github.io/saev/api/developers/naming/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/developers/protocol/</loc>
+         <loc>https://imageomics.github.io/saev/api/developers/protocol/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/developers/workflows/</loc>
+         <loc>https://imageomics.github.io/saev/api/developers/workflows/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/users/bird-mae-debugging/</loc>
+         <loc>https://imageomics.github.io/saev/api/users/bird-mae-debugging/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/users/glossary/</loc>
+         <loc>https://imageomics.github.io/saev/api/users/glossary/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/users/guide/</loc>
+         <loc>https://imageomics.github.io/saev/api/users/guide/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/users/inference/</loc>
+         <loc>https://imageomics.github.io/saev/api/users/inference/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/users/new-project/</loc>
+         <loc>https://imageomics.github.io/saev/api/users/new-project/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
     <url>
-         <loc>https://osu-nlp-group.github.io/saev/api/users/sweeps/</loc>
+         <loc>https://imageomics.github.io/saev/api/users/sweeps/</loc>
          <lastmod>2026-03-06</lastmod>
     </url>
 </urlset>

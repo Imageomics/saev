@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 MARIMO_SRC = ROOT / "examples" / "inference.py"
 IPYNB_DST = ROOT / "examples" / "inference.ipynb"
-REPO = "OSU-NLP-Group/saev"
+REPO = "Imageomics/saev"
 
 
 def get_commit_hash() -> str:

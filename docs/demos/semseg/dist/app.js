@@ -8422,7 +8422,7 @@ var $author$project$Semseg$explainGradioError = function (err) {
 		$elm$html$Html$a,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$href('https://github.com/OSU-NLP-Group/saev/issues/new'),
+				$elm$html$Html$Attributes$href('https://github.com/Imageomics/saev/issues/new'),
 				$elm$html$Html$Attributes$class('text-sky-500 hover:underline')
 			]),
 		_List_fromArray(

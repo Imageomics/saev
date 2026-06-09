@@ -1,7 +1,7 @@
 site_name: saev
 docs_dir: src
 site_dir: api
-site_url: https://osu-nlp-group.github.io/saev/api
+site_url: https://imageomics.github.io/saev/api
 
 theme:
   name: material
@@ -30,7 +30,7 @@ extra_css:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/OSU-NLP-Group/saev
+      link: https://github.com/Imageomics/saev
 
 nav:
   - Home: index.md

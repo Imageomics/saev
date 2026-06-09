@@ -507,7 +507,7 @@ explainGradioError err =
     let
         githubLink =
             Html.a
-                [ Html.Attributes.href "https://github.com/OSU-NLP-Group/saev/issues/new"
+                [ Html.Attributes.href "https://github.com/Imageomics/saev/issues/new"
                 , class "text-sky-500 hover:underline"
                 ]
                 [ Html.text "GitHub" ]

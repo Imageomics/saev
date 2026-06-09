@@ -38,8 +38,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.urls]
-Homepage = "https://osu-nlp-group.github.io/saev"
-Issues = "https://github.com/OSU-NLP-Group/saev/issues"
+Homepage = "https://imageomics.github.io/saev"
+Issues = "https://github.com/Imageomics/saev/issues"
 
 [tool.ruff]
 extend-exclude = ["tests/sweeps"]
