@@ -24,6 +24,13 @@ keywords:
   - interpretability
   - computer vision
 license: MIT
-commit: 6a34b6916fda7b04cc2d89749b3ad6425a8f39e6
-date-released: '2025-11-16'
-
+date-released: '2026-06-10'
+identifiers:
+  - description: "The GitHub release URL of tag v0.1.0."
+    type: url
+    value: "https://github.com/Imageomics/saev/releases/tag/v0.1.0"
+  - description: "The GitHub URL of the commit tagged with v0.1.0."
+    type: url
+    value: "https://github.com/Imageomics/saev/tree/<commit-hash>" # Update on release
+version: 0.1.0
+#doi: <version-agnostic DOI from Zenodo>

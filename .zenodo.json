@@ -1,0 +1,37 @@
+{
+    "creators": [
+      {
+        "name": "Stevens, Samuel",
+        "orcid": "https://orcid.org/0009-0000-9493-7766",
+        "affiliation": "The Ohio State University"
+      }
+    ],
+    "description": "saev is a package for training sparse autoencoders (SAEs) on vision transformers (ViTs) in PyTorch.",
+    "keywords": [
+      "imageomics",
+      "sparse autoencoders",
+      "interpretability",
+      "computer vision"
+    ],
+    "title": "saev: Sparse Autoencoders for Vision Transformers",
+    "version": "0.1.0",
+    "license": "MIT",
+    "publication_date": "2026-06-10",
+    "grants": [
+        {
+            "id": "021nxhr62::2118240"
+        }
+    ],
+    "related_identifiers": [
+        {
+        "identifier": "10.48550/arXiv.2502.06755",
+        "relation": "isSupplementTo",
+        "resource_type": "publication-preprint"
+        },
+        {
+        "identifier": "10.48550/arXiv.2511.17735",
+        "relation": "isSupplementTo",
+        "resource_type": "publication-preprint"
+        }
+    ]
+}
