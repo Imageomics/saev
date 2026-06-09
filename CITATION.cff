@@ -23,7 +23,7 @@ keywords:
   - sparse autoencoders
   - interpretability
   - computer vision
-license: CC-BY-4.0
+license: MIT
 commit: 6a34b6916fda7b04cc2d89749b3ad6425a8f39e6
 date-released: '2025-11-16'
 
