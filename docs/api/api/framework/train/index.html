@@ -3425,9 +3425,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/saev/framework/train.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">508</span>
-<span class="normal">509</span>
-<span class="normal">510</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">510</span>
 <span class="normal">511</span>
 <span class="normal">512</span>
 <span class="normal">513</span>
@@ -3533,7 +3531,9 @@
 <span class="normal">613</span>
 <span class="normal">614</span>
 <span class="normal">615</span>
-<span class="normal">616</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
 <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
     <span class="n">cfgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Config</span><span class="p">],</span> <span class="n">saes</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">,</span> <span class="n">objectives</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span>
@@ -3731,9 +3731,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/saev/framework/train.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">703</span>
-<span class="normal">704</span>
-<span class="normal">705</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">705</span>
 <span class="normal">706</span>
 <span class="normal">707</span>
 <span class="normal">708</span>
@@ -3823,7 +3821,9 @@
 <span class="normal">792</span>
 <span class="normal">793</span>
 <span class="normal">794</span>
-<span class="normal">795</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span>
     <span class="n">cfg</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Annotated</span><span class="p">[</span><span class="n">Config</span><span class="p">,</span> <span class="n">tyro</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">arg</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)],</span>
     <span class="n">sweep</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4000,9 +4000,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/saev/framework/train.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">667</span>
-<span class="normal">668</span>
-<span class="normal">669</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">669</span>
 <span class="normal">670</span>
 <span class="normal">671</span>
 <span class="normal">672</span>
@@ -4026,7 +4024,9 @@
 <span class="normal">690</span>
 <span class="normal">691</span>
 <span class="normal">692</span>
-<span class="normal">693</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
+<span class="normal">693</span>
+<span class="normal">694</span>
+<span class="normal">695</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">split_cfgs</span><span class="p">(</span><span class="n">cfgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Config</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Config</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits configs into groups that can be parallelized.</span>
@@ -4075,9 +4075,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/saev/framework/train.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
 <span class="normal">241</span>
@@ -4299,7 +4297,9 @@
 <span class="normal">457</span>
 <span class="normal">458</span>
 <span class="normal">459</span>
-<span class="normal">460</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@beartype</span><span class="o">.</span><span class="n">beartype</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span>
     <span class="n">cfgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Config</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>

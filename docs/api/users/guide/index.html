@@ -2261,7 +2261,7 @@ flowchart TD
 </ul>
 <h3 id="running-a-sweep">Running a Sweep<a class="headerlink" href="#running-a-sweep" title="Permanent link">&para;</a></h3>
 <p>The <code>train</code> command accepts a <code>--sweep</code> parameter that points to a TOML file defining the hyperparameter grid:</p>
-<pre><code class="language-bash">uv run python -m saev train --sweep configs/my_sweep.toml
+<pre><code class="language-bash">uv run launch.py train --sweep configs/my_sweep.toml
 </code></pre>
 <p>Here's an example sweep configuration file:</p>
 <pre><code class="language-toml">[sae]

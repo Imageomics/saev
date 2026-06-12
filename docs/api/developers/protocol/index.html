@@ -2225,7 +2225,10 @@ Guards against silent config drift.</p>
 examples_per_shard = floor(patches_per_shard / (tokens_per_ex * len(layers)))
 
 shape_per_shard = (
-    examples_per_shard, len(layers), tokens_per_ex, d_model,
+    examples_per_shard,
+    len(layers),
+    tokens_per_ex,
+    d_model,
 )
 </code></pre>
 <p><em><code>patches_per_shard</code> is a </em><em>budget</em><em> (default ~2.4 M) chosen so a shard is approximately 10 GiB for Float32 @ <code>d_model = 1024</code>.</em></p>
