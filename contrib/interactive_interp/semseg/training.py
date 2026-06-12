@@ -358,7 +358,8 @@ class Dataset(torch.utils.data.Dataset):
 
         pw, ph = self.patch_size_px
         patch_labels = (
-            einops.rearrange(pixel_labels, "(w pw) (h ph) -> w h (pw ph)", pw=pw, ph=ph)
+            einops
+            .rearrange(pixel_labels, "(w pw) (h ph) -> w h (pw ph)", pw=pw, ph=ph)
             .mode(axis=-1)
             .values
         )

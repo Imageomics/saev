@@ -74,9 +74,7 @@ def build_features(
     """Collect features that have pre-rendered images on disk."""
     features = []
     available = {
-        int(d.name)
-        for d in images_dpath.iterdir()
-        if d.is_dir() and d.name.isdigit()
+        int(d.name) for d in images_dpath.iterdir() if d.is_dir() and d.name.isdigit()
     }
 
     for row in var_df.iter_rows(named=True):
@@ -275,15 +273,49 @@ render();
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--run", type=pathlib.Path, required=True, help="Run directory (e.g. /fs/ess/.../runs/um6hbn05)")
-    parser.add_argument("--shard", type=str, required=True, help="Shard ID (e.g. 8692dfa9)")
-    parser.add_argument("--dataset", type=pathlib.Path, default=None, help="Dataset root (segfolder with images/ dir, for label ordering)")
-    parser.add_argument("--split", type=str, default="validation", help="Dataset split name (default: validation)")
-    parser.add_argument("--hf-config", type=str, default="trait_segmentation", help="HuggingFace FishVista config name")
-    parser.add_argument("--hf-split", type=str, default="val", help="HuggingFace split name (default: val)")
-    parser.add_argument("--out", type=pathlib.Path, default=pathlib.Path("gallery.html"), help="Output HTML path")
+    parser.add_argument(
+        "--run",
+        type=pathlib.Path,
+        required=True,
+        help="Run directory (e.g. /fs/ess/.../runs/um6hbn05)",
+    )
+    parser.add_argument(
+        "--shard", type=str, required=True, help="Shard ID (e.g. 8692dfa9)"
+    )
+    parser.add_argument(
+        "--dataset",
+        type=pathlib.Path,
+        default=None,
+        help="Dataset root (segfolder with images/ dir, for label ordering)",
+    )
+    parser.add_argument(
+        "--split",
+        type=str,
+        default="validation",
+        help="Dataset split name (default: validation)",
+    )
+    parser.add_argument(
+        "--hf-config",
+        type=str,
+        default="trait_segmentation",
+        help="HuggingFace FishVista config name",
+    )
+    parser.add_argument(
+        "--hf-split",
+        type=str,
+        default="val",
+        help="HuggingFace split name (default: val)",
+    )
+    parser.add_argument(
+        "--out",
+        type=pathlib.Path,
+        default=pathlib.Path("gallery.html"),
+        help="Output HTML path",
+    )
     parser.add_argument("--quality", type=int, default=80, help="JPEG quality (0-100)")
-    parser.add_argument("--title", type=str, default="", help="Gallery subtitle/description")
+    parser.add_argument(
+        "--title", type=str, default="", help="Gallery subtitle/description"
+    )
     args = parser.parse_args()
 
     inference_dpath = args.run / "inference" / args.shard
@@ -313,7 +345,10 @@ def main():
     n_imgs = sum(len(f["images"]) for f in features)
     logger.info("Total images: %d", n_imgs)
 
-    title = args.title or f"SAE run {args.run.name}, shard {args.shard} | {len(features)} features, {n_imgs} images"
+    title = (
+        args.title
+        or f"SAE run {args.run.name}, shard {args.shard} | {len(features)} features, {n_imgs} images"
+    )
     html = HTML_TEMPLATE.replace("FEATURES_JSON", json.dumps(features))
     html = html.replace("TITLE_PLACEHOLDER", title)
     html = html.replace("RUN_ID_PLACEHOLDER", args.run.name)

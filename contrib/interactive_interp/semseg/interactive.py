@@ -570,7 +570,8 @@ def __(Float, Tensor, Uint8, beartype, jaxtyped, torch):
         logits_WHC: Float[Tensor, "width height classes"],
     ) -> Uint8[Tensor, "width height"]:
         return (
-            torch.nn.functional.interpolate(
+            torch.nn.functional
+            .interpolate(
                 logits_WHC.max(axis=-1).indices.view((1, 1, 16, 16)).float(),
                 scale_factor=14,
             )
