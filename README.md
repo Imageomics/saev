@@ -24,15 +24,6 @@ Trained SAE checkpoints are available at:
 
 - [Huggingface Models](https://huggingface.co/collections/osunlp/sae-v-67ab8c4fdf179d117db28195)
 
-If you want to cite the software, please cite it as:
+## Citation
 
-```bib
-@software{stevens2025saev,
-  author = {Stevens, Samuel},
-  month = apr,
-  title = {{saev}},
-  url = {https://github.com/Imageomics/saev},
-  year = {2025}
-}
-```
-
+If you want to cite the software, please use the "Cite this repository" link on the GitHub page, which will provide you with the appropriate citation format.
