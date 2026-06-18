@@ -4,6 +4,9 @@ docs: lint
     -yek src/saev README.md AGENTS.md > docs/api/llms.txt
     uv run mkdocs build --config-file docs/mkdocs.yml
 
+validate-zenodo:
+    sh scripts/validation-zenodo.sh
+
 test:
     uv run pytest -m "not slow and not integration" tests
 

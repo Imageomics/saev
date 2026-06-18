@@ -1,6 +1,6 @@
 # Inference
 
-> If you want to get started quickly, try the [inference notebook](https://github.com/OSU-NLP-Group/saev/blob/main/examples/inference.ipynb) in marimo or on [Google Colab](https://colab.research.google.com/github/OSU-NLP-Group/saev/blob/main/examples/inference.ipynb).
+> If you want to get started quickly, try the [inference notebook](https://github.com/Imageomics/saev/blob/main/examples/inference.ipynb) in marimo or on [Google Colab](https://colab.research.google.com/github/Imageomics/saev/blob/main/examples/inference.ipynb).
 
 Briefly, you need to:
 
@@ -58,13 +58,13 @@ Available DINOv3 repos:
 The easiest way to do this is to clone the code:
 
 ```
-git clone https://github.com/OSU-NLP-Group/saev
+git clone https://github.com/Imageomics/saev
 ```
 
 You can also install the package from git if you use uv (not sure about pip or cuda):
 
 ```sh
-uv add git+https://github.com/OSU-NLP-Group/saev
+uv add git+https://github.com/Imageomics/saev
 ```
 
 Or clone it and install it as an editable with pip, lik `pip install -e .` in your virtual environment.
@@ -73,7 +73,7 @@ Then you can do things like `from saev import ...`.
 
 !!! note
 
-    If you struggle to get `saev` installed, open an issue on [GitHub](https://github.com/OSU-NLP-Group/saev) and I will figure out how to make it easier.
+    If you struggle to get `saev` installed, open an issue on [GitHub](https://github.com/Imageomics/saev) and I will figure out how to make it easier.
 
 ## Load the Checkpoint
 

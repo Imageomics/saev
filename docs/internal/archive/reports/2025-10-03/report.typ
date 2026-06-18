@@ -62,7 +62,7 @@ I haven't tried it yet because of some other blockers (see below).
 
 = Refactors
 
-+ #link("https://osu-nlp-group.github.io/saev/api/")[User-facing documentation].
++ #link("https://imageomics.github.io/saev/api/")[User-facing documentation].
 + [in progress] Update disk layout to make it easier to refer from a particular run to the original sharded activations and the image dataset on disk.
 + [in progress] Removing references to images and vision transformers in order to support non-vision but still bi-directional transformers, like audio or other modalities.
 

@@ -13,8 +13,8 @@ authors:
     email: samuel.robert.stevens@gmail.com
     orcid: 'https://orcid.org/0009-0000-9493-7766'
     affiliation: The Ohio State University
-repository-code: 'https://github.com/OSU-NLP-Group/saev'
-url: 'https://osu-nlp-group.github.io/saev/'
+repository-code: 'https://github.com/Imageomics/saev'
+url: 'https://imageomics.github.io/saev/'
 repository-artifact: 'https://pypi.org/project/saev/'
 abstract: >-
   saev is a package for training sparse autoencoders (SAEs)
@@ -23,7 +23,14 @@ keywords:
   - sparse autoencoders
   - interpretability
   - computer vision
-license: CC-BY-4.0
-commit: 6a34b6916fda7b04cc2d89749b3ad6425a8f39e6
-date-released: '2025-11-16'
-
+license: MIT
+date-released: '2026-06-18'
+identifiers:
+  - description: "The GitHub release URL of tag v0.1.0."
+    type: url
+    value: "https://github.com/Imageomics/saev/releases/tag/v0.1.0"
+  - description: "The GitHub URL of the commit tagged with v0.1.0."
+    type: url
+    value: "https://github.com/Imageomics/saev/tree/<commit-hash>" # Update on release
+version: 0.1.0
+#doi: <version-agnostic DOI from Zenodo>

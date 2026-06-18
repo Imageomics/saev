@@ -8,7 +8,7 @@ This project aims to use sparse autoencoders (SAEs) on vision transformers like 
 
 Sparse autoencoders were recently applied to interpreting large language models by many groups.
 [Anthropic's work](https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html) is probably the most well known, but [OpenAI has some work](https://cdn.openai.com/papers/sparse-autoencoders.pdf) and [Google does too](https://arxiv.org/abs/2408.05147).
-I have some prior work ([website](https://osu-nlp-group.github.io/saev/), [arxiv](https://arxiv.org/abs/2502.06755))  that shows that sparse autoencoders can also be applied to vision transformer activations and nice-looking qualitative examples are discovered in ViT activations.
+I have some prior work ([website](https://imageomics.github.io/saev/), [arxiv](https://arxiv.org/abs/2502.06755))  that shows that sparse autoencoders can also be applied to vision transformer activations and nice-looking qualitative examples are discovered in ViT activations.
 
 **"Interesting and scientifically meaningful"**
 
@@ -75,7 +75,7 @@ train_baseline.py
 ## Environment
 
 ```sh
-git clone https://github.com/OSU-NLP-Group/saev
+git clone https://github.com/Imageomics/saev
 git checkout ring-buffer
 
 # Check that saev/ installed okay.

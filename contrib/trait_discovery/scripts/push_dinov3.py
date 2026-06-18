@@ -251,10 +251,10 @@ license: mit
 
 # SAE for Meta's {repo.title} trained on ImageNet-1K Activations
 
-* **Homepage:** https://osu-nlp-group.github.io/saev
-* **Code:** https://github.com/OSU-NLP-Group/saev
+* **Homepage:** https://imageomics.github.io/saev
+* **Code:** https://github.com/Imageomics/saev
 * **Preprint:** https://arxiv.org/abs/2511.17735
-* **Demos:** https://osu-nlp-group.github.io/saev#demos
+* **Demos:** https://imageomics.github.io/saev#demos
 * **Point of Contact:** [Sam Stevens](mailto:stevens.994@buckeyemail.osu.edu)
 
 ## Checkpoints
@@ -280,7 +280,7 @@ sae = saev.nn.load(path)
 
 ## Inference Instructions
 
-Follow the instructions [here](https://osu-nlp-group.github.io/saev/api/saev/#inference-instructions).
+Follow the instructions [here](https://imageomics.github.io/saev/api/saev/#inference-instructions).
 """
 
 

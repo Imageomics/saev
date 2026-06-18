@@ -201,7 +201,7 @@ Three risks that could stall or kill the project:
 
 = Infrastructure and Data
 
-- *Code:* Currently under the `OSU-NLP-Group` GitHub org. Needs discussion with Tanya about whether to transfer to the Imageomics GitHub org.
+- *Code:* ~Currently under the `OSU-NLP-Group` GitHub org. Needs discussion with Tanya about whether to transfer to~ Now under the Imageomics GitHub org.
 - *Cluster data:* Trained checkpoints, activation caches, and intermediate results live on shared cluster scratch/project space (e.g., `/fs/scratch/PAS2136/`). This data persists but is regenerable from the configs if lost.
 - *No personal storage risk:* All important data is on shared infrastructure, not personal directories.
 
