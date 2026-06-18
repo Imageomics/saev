@@ -31,6 +31,6 @@ identifiers:
     value: "https://github.com/Imageomics/saev/releases/tag/v0.1.0"
   - description: "The GitHub URL of the commit tagged with v0.1.0."
     type: url
-    value: "https://github.com/Imageomics/saev/tree/<commit-hash>" # Update on release
+    value: "https://github.com/Imageomics/saev/tree/def4457375c222cbd16e2e0caacaaa71a7fc551d" # Update on release
 version: 0.1.0
-#doi: <version-agnostic DOI from Zenodo>
+doi: 10.5281/zenodo.20753477
