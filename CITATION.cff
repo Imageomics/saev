@@ -24,7 +24,7 @@ keywords:
   - interpretability
   - computer vision
 license: MIT
-date-released: '2026-06-10'
+date-released: '2026-06-18'
 identifiers:
   - description: "The GitHub release URL of tag v0.1.0."
     type: url
