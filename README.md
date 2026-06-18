@@ -3,6 +3,7 @@
 ![PyPI Downloads](https://static.pepy.tech/badge/saev)
 ![MIT License](https://img.shields.io/badge/License-MIT-efefef)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Imageomics/saev?style=flat&label=GitHub%20%E2%AD%90)
+[![DOI](https://zenodo.org/badge/874858975.svg)](https://doi.org/10.5281/zenodo.20753477)
 
 Training sparse autoencoders (SAEs) on vision transformers (ViTs), implemented in PyTorch.
 
