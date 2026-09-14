@@ -29,7 +29,7 @@ from saev.metrics import Metrics
 
 log_format = "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s"
 
-BaselineMethod = tp.Literal["kmeans", "pca", "semi-nmf"]
+BaselineMethod = tp.Literal["kmeans", "pca", "semi-nmf", "nmf"]
 
 BASELINE_SCHEMA_VERSION = 1
 
@@ -462,6 +462,199 @@ class MiniBatchSemiNMF(torch.nn.Module):
         self.last_batch_nmse_ = recon_sse / sse_baseline
 
 
+@jaxtyped(typechecker=beartype.beartype)
+class MiniBatchNMF(torch.nn.Module):
+    """Mini-batch NMF estimator with non-negative codes and dictionary."""
+
+    method = "nmf"
+
+    def __init__(
+        self,
+        n_concepts: int,
+        device: str = "cuda",
+        z_iters: int = 10,
+        encode_iters: int = 300,
+        d_iters: int = 10,
+        batch_size: int = 16384,
+        ridge: float = 1e-6,
+        eps: float = 1e-8,
+        forget_factor: float = 0.7,
+        d_update_every: int = 10,
+    ):
+        super().__init__()
+        assert n_concepts > 0, "n_concepts must be positive"
+        assert z_iters >= 0, "z_iters must be non-negative"
+        assert encode_iters >= 0, "encode_iters must be non-negative"
+        assert d_iters >= 0, "d_iters must be non-negative"
+        assert batch_size > 0, "batch_size must be positive"
+        assert ridge >= 0.0, "ridge must be non-negative"
+        assert eps > 0.0, "eps must be positive"
+        assert 0.0 <= forget_factor < 1.0, "forget_factor must be in [0, 1)"
+        assert d_update_every > 0, "d_update_every must be positive"
+
+        self.n_concepts = n_concepts
+        self.device = torch.device(device)
+        self.z_iters = z_iters
+        self.encode_iters = encode_iters
+        self.d_iters = d_iters
+        self.batch_size = batch_size
+        self.ridge = float(ridge)
+        self.eps = float(eps)
+        self.forget_factor = float(forget_factor)
+        self.d_update_every = d_update_every
+
+        self.D_: Tensor | None = None
+        self.n_features_in_: int | None = None
+        self.n_samples_seen_: int = 0
+        self.n_steps_: int = 0
+        self.ZtZ_acc_: Tensor | None = None
+        self.ZtA_acc_: Tensor | None = None
+        self.last_batch_recon_mse_: float | None = None
+        self.last_batch_nmse_: float | None = None
+        self._ddt_: Tensor | None = None
+        self._ddt_pos_: Tensor | None = None
+        self._ddt_neg_: Tensor | None = None
+        self._ddt_reg_inv_: Tensor | None = None
+
+    def partial_fit(self, batch: Float[Tensor, "batch d_model"]) -> tp.Self:
+        assert batch.ndim == 2, f"batch must be 2D, got {batch.shape}"
+        if batch.shape[0] == 0:
+            return self
+
+        acts = batch.to(self.device, dtype=torch.float32)
+        n_batch, n_features = acts.shape
+
+        if self.n_features_in_ is None:
+            self._initialize_dictionary(n_features)
+        else:
+            msg = f"Expected {self.n_features_in_} features, got {n_features}"
+            assert n_features == self.n_features_in_, msg
+
+        z = self._encode(acts, self.z_iters)
+        self._update_last_batch_metrics(acts, z)
+
+        zt = z.mT
+        ztz = zt @ z
+        zta = zt @ acts
+
+        assert self.ZtZ_acc_ is not None
+        assert self.ZtA_acc_ is not None
+        forget = self.forget_factor
+        self.ZtZ_acc_ = forget * self.ZtZ_acc_ + (1.0 - forget) * ztz
+        self.ZtA_acc_ = forget * self.ZtA_acc_ + (1.0 - forget) * zta
+
+        self.n_samples_seen_ += int(n_batch)
+        self.n_steps_ += 1
+
+        if self.n_steps_ % self.d_update_every == 0:
+            self._update_dictionary_from_accumulators()
+
+        return self
+
+    def transform(
+        self, batch: Float[Tensor, "batch d_model"], *, n_iters: int | None = None
+    ) -> Float[Tensor, "batch k"]:
+        assert self.D_ is not None, "MiniBatchNMF has not been fitted"
+        assert batch.ndim == 2, f"batch must be 2D, got {batch.shape}"
+        acts = batch.to(self.device, dtype=torch.float32)
+        n_iters = self.encode_iters if n_iters is None else n_iters
+        assert n_iters >= 0, "n_iters must be non-negative"
+        return self._encode(acts, n_iters)
+
+    def _initialize_dictionary(self, n_features: int) -> None:
+        assert self.n_features_in_ is None, "Dictionary already initialized"
+        D = torch.randn(
+            self.n_concepts, n_features, device=self.device, dtype=torch.float32
+        ).abs()
+        self.D_ = D.clamp_min(self.eps)
+        self.n_features_in_ = n_features
+        self.ZtZ_acc_ = torch.zeros(
+            (self.n_concepts, self.n_concepts), device=self.device, dtype=torch.float32
+        )
+        self.ZtA_acc_ = torch.zeros(
+            (self.n_concepts, n_features), device=self.device, dtype=torch.float32
+        )
+        self._refresh_cache()
+
+    def _update_dictionary_from_accumulators(self) -> None:
+        assert self.D_ is not None
+        assert self.ZtZ_acc_ is not None
+        assert self.ZtA_acc_ is not None
+        ztz_pos = _pos_part(self.ZtZ_acc_)
+        ztz_neg = _neg_part(self.ZtZ_acc_)
+        zta_pos = _pos_part(self.ZtA_acc_)
+        zta_neg = _neg_part(self.ZtA_acc_)
+        D = self.D_
+        for _ in range(self.d_iters):
+            numerator = zta_pos + ztz_neg @ D
+            denominator = zta_neg + ztz_pos @ D + self.eps
+            D = D * torch.sqrt(numerator / denominator)
+        self.D_ = D.clamp_min(self.eps)
+        self._refresh_cache()
+
+    def _refresh_cache(self) -> None:
+        assert self.D_ is not None
+        ddt = self.D_ @ self.D_.mT
+        self._ddt_ = ddt
+        self._ddt_pos_ = _pos_part(ddt)
+        self._ddt_neg_ = _neg_part(ddt)
+        eye = torch.eye(self.n_concepts, device=ddt.device, dtype=ddt.dtype)
+        self._ddt_reg_inv_ = torch.linalg.solve(ddt + self.eps * eye, eye)
+
+    def _ensure_cache(self) -> None:
+        if (
+            self._ddt_pos_ is None
+            or self._ddt_neg_ is None
+            or self._ddt_reg_inv_ is None
+        ):
+            self._refresh_cache()
+
+    def _encode(self, acts: Tensor, n_iters: int) -> Tensor:
+        assert self.D_ is not None
+        self._ensure_cache()
+        assert self._ddt_pos_ is not None
+        assert self._ddt_neg_ is not None
+        assert self._ddt_reg_inv_ is not None
+
+        z = acts @ self.D_.mT @ self._ddt_reg_inv_
+        z = z.clamp_min(self.eps)
+        if n_iters == 0:
+            return z
+
+        atd = acts @ self.D_.mT
+        atd_pos = _pos_part(atd)
+        atd_neg = _neg_part(atd)
+        ddt_pos = self._ddt_pos_
+        ddt_neg = self._ddt_neg_
+
+        for _ in range(n_iters):
+            numerator = atd_pos + z @ ddt_neg
+            denominator = atd_neg + z @ ddt_pos + self.eps
+            z = z * torch.sqrt(numerator / denominator)
+
+        return z
+
+    def _update_last_batch_metrics(self, acts: Tensor, z: Tensor) -> None:
+        assert self.D_ is not None
+        n_batch = acts.shape[0]
+        recon = z @ self.D_
+        diff = (acts - recon).to(torch.float64)
+        recon_sse = diff.pow(2).sum().item()
+        self.last_batch_recon_mse_ = recon_sse / n_batch
+
+        acts64 = acts.to(torch.float64)
+        sum_sq = (acts64 * acts64).sum().item()
+        sum_vec = acts64.sum(dim=0)
+        sum_vec_sq = torch.dot(sum_vec, sum_vec).item()
+        sse_baseline = sum_sq - sum_vec_sq / n_batch
+        msg = (
+            f"Baseline variance is non-positive (sse_baseline={sse_baseline:.6e});"
+            " cannot compute normalized MSE."
+        )
+        assert sse_baseline > 0.0, msg
+        self.last_batch_nmse_ = recon_sse / sse_baseline
+
+
 @beartype.beartype
 @dataclasses.dataclass(frozen=True)
 class TrainConfig:
@@ -474,6 +667,7 @@ class TrainConfig:
     collapse_tol: float = 0.5
     z_iters: int = 10
     encode_iters: int = 300
+    d_iters: int = 10
     ridge: float = 1e-6
     eps: float = 1e-8
     forget_factor: float = 0.7
@@ -504,7 +698,7 @@ class InferenceConfig:
     n_dists: int = 25
     """Number of latent dimensions to snapshot for distributions."""
     n_iters: int = 300
-    """Number of multiplicative update iterations during Semi-NMF inference."""
+    """Number of multiplicative update iterations during NMF/Semi-NMF inference."""
     save: bool = True
     """Whether to write token_acts/statistics files. If False, only metrics.json is written."""
     force: bool = False
@@ -567,6 +761,32 @@ def _materialize_model(
             device=device,
             z_iters=state["z_iters"],
             encode_iters=state["encode_iters"],
+            batch_size=state["batch_size"],
+            ridge=state["ridge"],
+            eps=state["eps"],
+            forget_factor=state["forget_factor"],
+            d_update_every=state["d_update_every"],
+        )
+        model.D_ = D.to(device)
+        model.n_features_in_ = n_features_in
+        model.n_samples_seen_ = state["n_samples_seen"]
+        model.n_steps_ = state["n_steps"]
+        model.last_batch_recon_mse_ = state["last_batch_recon_mse"]
+        model.last_batch_nmse_ = state["last_batch_nmse"]
+        model._refresh_cache()
+        return model
+    elif method == "nmf":
+        D = state["D"]
+        n_concepts, n_features_in = D.shape
+        msg = f"n_features_in mismatch: {state['n_features_in']} vs {n_features_in}"
+        assert state["n_features_in"] == n_features_in, msg
+
+        model = MiniBatchNMF(
+            n_concepts=n_concepts,
+            device=device,
+            z_iters=state["z_iters"],
+            encode_iters=state["encode_iters"],
+            d_iters=state["d_iters"],
             batch_size=state["batch_size"],
             ridge=state["ridge"],
             eps=state["eps"],
@@ -650,6 +870,26 @@ def _serialize_model_state(model: torch.nn.Module) -> dict[str, tp.Any]:
             "last_batch_recon_mse": model.last_batch_recon_mse_,
             "last_batch_nmse": model.last_batch_nmse_,
         }
+    if isinstance(model, MiniBatchNMF):
+        assert model.D_ is not None, "D_ missing"
+        assert model.n_features_in_ is not None, "n_features_in_ missing"
+        return {
+            "D": model.D_.cpu(),
+            "n_features_in": model.n_features_in_,
+            "n_samples_seen": model.n_samples_seen_,
+            "n_steps": model.n_steps_,
+            "n_concepts": model.n_concepts,
+            "z_iters": model.z_iters,
+            "encode_iters": model.encode_iters,
+            "d_iters": model.d_iters,
+            "batch_size": model.batch_size,
+            "ridge": model.ridge,
+            "eps": model.eps,
+            "forget_factor": model.forget_factor,
+            "d_update_every": model.d_update_every,
+            "last_batch_recon_mse": model.last_batch_recon_mse_,
+            "last_batch_nmse": model.last_batch_nmse_,
+        }
     raise TypeError(f"Unsupported baseline model type: {type(model).__name__}")
 
 
@@ -689,7 +929,7 @@ def get_training_metrics(model: torch.nn.Module, n_samples: int) -> dict[str, fl
             "train/var_ratio": model.last_batch_var_ratio_ or 0.0,
             "train/n_samples": n_samples,
         }
-    if isinstance(model, MiniBatchSemiNMF):
+    if isinstance(model, (MiniBatchSemiNMF, MiniBatchNMF)):
         return {
             "train/recon_mse": model.last_batch_recon_mse_ or 0.0,
             "train/nmse": model.last_batch_nmse_ or 0.0,
@@ -798,11 +1038,13 @@ def eval_pca(cfg: TrainConfig, model: MiniBatchPCA) -> dict[str, float]:
 
 
 @beartype.beartype
-def eval_semi_nmf(cfg: TrainConfig, model: MiniBatchSemiNMF) -> dict[str, float]:
+def eval_factorization(
+    cfg: TrainConfig, model: MiniBatchSemiNMF | MiniBatchNMF
+) -> dict[str, float]:
     if cfg.n_val <= 0:
         return {}
 
-    assert model.D_ is not None, "D_ missing for Semi-NMF eval"
+    assert model.D_ is not None, f"D_ missing for {model.method} eval"
 
     dataloader = saev.data.ShuffledDataLoader(cfg.val_data)
     loader_like = tp.cast(saev.utils.scheduling.DataLoaderLike, dataloader)
@@ -816,7 +1058,7 @@ def eval_semi_nmf(cfg: TrainConfig, model: MiniBatchSemiNMF) -> dict[str, float]
     )
     n_samples = 0
 
-    for batch in saev.helpers.progress(limiter, desc="semi-nmf-eval", every=20):
+    for batch in saev.helpers.progress(limiter, desc=f"{model.method}-eval", every=20):
         acts = batch["act"].to(model.device, non_blocking=True)
         codes = model.transform(acts)
         recon = codes @ model.D_
@@ -876,6 +1118,19 @@ def train_worker_fn(cfg: TrainConfig):
             forget_factor=cfg.forget_factor,
             d_update_every=cfg.d_update_every,
         )
+    elif cfg.method == "nmf":
+        model = MiniBatchNMF(
+            n_concepts=cfg.k,
+            device=cfg.device,
+            z_iters=cfg.z_iters,
+            encode_iters=cfg.encode_iters,
+            d_iters=cfg.d_iters,
+            batch_size=cfg.train_data.batch_size,
+            ridge=cfg.ridge,
+            eps=cfg.eps,
+            forget_factor=cfg.forget_factor,
+            d_update_every=cfg.d_update_every,
+        )
     else:
         tp.assert_never(cfg.method)
 
@@ -912,7 +1167,7 @@ def train_worker_fn(cfg: TrainConfig):
         elapsed,
     )
 
-    if isinstance(model, MiniBatchSemiNMF) and model.n_steps_ > 0:
+    if isinstance(model, (MiniBatchSemiNMF, MiniBatchNMF)) and model.n_steps_ > 0:
         if model.n_steps_ % model.d_update_every != 0:
             model._update_dictionary_from_accumulators()
 
@@ -927,7 +1182,10 @@ def train_worker_fn(cfg: TrainConfig):
         eval_metrics = eval_pca(cfg, model)
     elif cfg.method == "semi-nmf":
         assert isinstance(model, MiniBatchSemiNMF)
-        eval_metrics = eval_semi_nmf(cfg, model)
+        eval_metrics = eval_factorization(cfg, model)
+    elif cfg.method == "nmf":
+        assert isinstance(model, MiniBatchNMF)
+        eval_metrics = eval_factorization(cfg, model)
     else:
         tp.assert_never(cfg.method)
 
@@ -1243,7 +1501,9 @@ def _run_pca_inference(cfg: InferenceConfig, model: MiniBatchPCA):
 
 
 @beartype.beartype
-def _run_semi_nmf_inference(cfg: InferenceConfig, model: MiniBatchSemiNMF):
+def _run_factorization_inference(
+    cfg: InferenceConfig, model: MiniBatchSemiNMF | MiniBatchNMF
+):
     logger = logging.getLogger("inference")
     md = saev.data.Metadata.load(cfg.data.shards)
 
@@ -1269,7 +1529,7 @@ def _run_semi_nmf_inference(cfg: InferenceConfig, model: MiniBatchSemiNMF):
     sum_vec_d = torch.zeros((d_model,), dtype=torch.float64, device=device)
     n_tokens = 0
 
-    for batch in saev.helpers.progress(dl, desc="semi-nmf-inference", every=1):
+    for batch in saev.helpers.progress(dl, desc=f"{model.method}-inference", every=1):
         acts = batch["act"].to(device)
         codes = model.transform(acts, n_iters=cfg.n_iters)
         codes = codes.to(torch.float32)
@@ -1305,7 +1565,7 @@ def _run_semi_nmf_inference(cfg: InferenceConfig, model: MiniBatchSemiNMF):
             token_acts_blocks.append(scipy.sparse.csr_matrix(codes.cpu().numpy()))
 
     if n_tokens == 0:
-        logger.warning("No tokens processed during Semi-NMF inference.")
+        logger.warning("No tokens processed during %s inference.", model.method)
         return
 
     if cfg.save:
@@ -1348,7 +1608,8 @@ def _run_semi_nmf_inference(cfg: InferenceConfig, model: MiniBatchSemiNMF):
 
     if cfg.save:
         logger.info(
-            "Wrote Semi-NMF baseline inference artifacts: %s, %s, %s, %s, %s",
+            "Wrote %s baseline inference artifacts: %s, %s, %s, %s, %s",
+            model.method,
             fpaths.token_acts,
             fpaths.mean_values,
             fpaths.sparsity,
@@ -1356,7 +1617,9 @@ def _run_semi_nmf_inference(cfg: InferenceConfig, model: MiniBatchSemiNMF):
             fpaths.metrics,
         )
     else:
-        logger.info("Wrote Semi-NMF baseline inference metrics: %s", fpaths.metrics)
+        logger.info(
+            "Wrote %s baseline inference metrics: %s", model.method, fpaths.metrics
+        )
 
 
 @beartype.beartype
@@ -1371,8 +1634,8 @@ def inference_worker_fn(cfg: InferenceConfig):
         _run_kmeans_inference(cfg, model)
     elif isinstance(model, MiniBatchPCA):
         _run_pca_inference(cfg, model)
-    elif isinstance(model, MiniBatchSemiNMF):
-        _run_semi_nmf_inference(cfg, model)
+    elif isinstance(model, (MiniBatchSemiNMF, MiniBatchNMF)):
+        _run_factorization_inference(cfg, model)
     else:
         tp.assert_never(model)
 

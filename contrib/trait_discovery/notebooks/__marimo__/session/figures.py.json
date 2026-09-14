@@ -1,0 +1,136 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.24.2",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "2e819f135b6cd1f608f6ced3860bf60d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"figures-for-towards-open-ended-visual-scientific-discovery-with-sparse-autoencoders\">Figures for \"Towards Open-Ended Visual Scientific Discovery with Sparse Autoencoders\"</h1>\n<span class=\"paragraph\">This notebook hardcodes run ids for reproducible figures.</span>\n<h2 id=\"coding-style-for-this-notebook\">Coding Style For This Notebook</h2>\n<ul>\n<li>Use <code>RunSpec</code> + <code>load_df(specs)</code> as the single data-loading interface.</li>\n<li><code>load_df</code> auto-scans run inference shards and adds shard-prefixed columns.<ul>\n<li>Metrics JSON columns: <code>&lt;val_shard&gt;/&lt;metric_name&gt;</code> (for example <code>3e27794f/normalized_mse</code>).</li>\n<li>Probe columns with explicit train-shard provenance: <code>&lt;val_shard&gt;/&lt;metric_name&gt;__train-&lt;train_shard&gt;</code> (for example <code>3802cb66/mean_ap__train-614861a0</code>).</li>\n<li>Local probe summary on a shard: <code>&lt;val_shard&gt;/probe_r</code>.</li>\n</ul>\n</li>\n<li>Loader helpers should only add columns, they should not pick max/min runs or aggregate across shards.</li>\n<li>Define run IDs inside each figure function/cell (local scope), not as global dicts.</li>\n<li>Keep each figure self-contained:<ul>\n<li>create <code>specs: list[RunSpec]</code></li>\n<li>call <code>load_df(specs)</code></li>\n<li>make the plot</li>\n<li>save figure artifacts (<code>.pdf</code>, <code>.csv</code>) to a fixed output path.</li>\n</ul>\n</li>\n<li>Do not create notebook-global loop variables like <code>method</code>; keep iteration inside figure functions.</li>\n<li>Add short provenance comments next to run IDs (sweep file, tag, or paper figure reference) when relevant.</li>\n<li>Prefer explicit, reproducible constants over dynamic discovery for publication figures.</li>\n</ul>\n<h2 id=\"typical-pattern\">Typical Pattern</h2>\n<ol>\n<li>Write <code>plot_&lt;figure_name&gt;()</code>.</li>\n<li>Inside it, define <code>specs = [RunSpec(...), ...]</code>.</li>\n<li><code>df, skipped = load_df(specs)</code>.</li>\n<li>Plot from <code>df</code>, then write <code>csv_df</code> and save both <code>pdf</code> and <code>csv</code>.</li>\n</ol>\n<h2 id=\"table-pattern\">Table Pattern</h2>\n<ol>\n<li>Write <code>&lt;table_name&gt;()</code>.</li>\n<li>Inside it, define <code>specs = [RunSpec(...), ...]</code>.</li>\n<li><code>df, skipped = load_df(specs)</code>.</li>\n<li>Select rows with explicit shard columns (for example best by <code>3802cb66/train_probe_r__train-614861a0</code>).</li>\n<li>Return a tidy table <code>DataFrame</code> and save a CSV artifact for reproducibility.</li>\n</ol></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "f8aa59931dd7caf1e93528e5d7f06e64",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "7d77a25a7c1f8e1583edc21facf33a49",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "46ca499e7a17d6e5a17124c724c2768c",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "0ed10486de073579e46f090143b96854",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "9a97423fa4ca34b494c6ab041eb3de26",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "d1c13686620ca5756d2c5312cf3bf98b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "9ef1fde031481b0b7d7302b93be1a0a8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "501976fe3dea1206a4c4f2a9a3f62fb8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "224bffd6ee51234131b59f2a0617ebfa",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "b5536d6ed3744540edc9d8df79e61113",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "875730ed93ce4ce8f0a94b4290f9d2fc",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "1900cff431ed5c1d4a91cbfdc102ecd8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "e50db32a5bad4088990d170c041b3beb",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "43061d12cea3d3d87388176bd94a1054",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "f03949ebd36f17958d87a15014d4714f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "a852d702f01b3c0e01c3b924ff83ef32",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "76b01af3bdb6cf84082405d7468657fb",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "5671defd02ad2d6a5b6350dfa13b05d6",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    }
+  ]
+}
