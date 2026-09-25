@@ -12,6 +12,7 @@ logs/
 .DS_Store
 tmp/
 elm-stuff/
+models--*/
 
 # Testing
 .coverage

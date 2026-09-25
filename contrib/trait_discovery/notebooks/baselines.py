@@ -99,7 +99,7 @@ def _(
 
         model: str = pa.Field()
         layer: int = pa.Field(ge=0)
-        method: str = pa.Field(isin=["k-means", "pca", "semi-nmf"])
+        method: str = pa.Field(isin=["k-means", "pca", "semi-nmf", "nmf"])
 
         # From baselines::train
         fit_data: str = pa.Field()
@@ -277,7 +277,7 @@ def _(
             method = None
             if method_raw == "kmeans":
                 method = "k-means"
-            elif method_raw in {"pca", "semi-nmf"}:
+            elif method_raw in {"pca", "semi-nmf", "nmf"}:
                 method = method_raw
 
             if method is None:
@@ -291,7 +291,7 @@ def _(
             if method == "k-means":
                 fit_val_mse = wandb_run["summary/eval/inertia"]
                 fit_val_l0 = 1.0
-            elif method in {"pca", "semi-nmf"}:
+            elif method in {"pca", "semi-nmf", "nmf"}:
                 fit_val_mse = wandb_run["summary/eval/recon_mse"]
                 fit_val_l0 = wandb_run["config/k"]
             else:
