@@ -4,7 +4,7 @@ def make_cfgs() -> list[dict]:
     cfgs: list[dict] = []
 
     runs_root = "/fs/ess/PAS2136/samuelstevens/tdiscovery/saev/runs"
-    dinov3_vitl_in1k_val = "/fs/scratch/PAS2136/samuelstevens/saev/shards/3e27794f"
+    dinov3_vitl_in1k_val = "/fs/scratch/PAS2136/jbeattie/iclr2026/saev/shards/10d802bd"
 
     baseline_run_ids = [
         "myy5btgw",  # kmeans, k=1
